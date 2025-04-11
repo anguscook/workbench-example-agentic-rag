@@ -23,38 +23,23 @@ layout:
 environment:
   base:
     registry: nvcr.io
-    image: nvidia/ai-workbench/pytorch:1.0.2
-    build_timestamp: "20231102150513"
+    image: nvidia/ai-workbench/pytorch:1.0.6
+    build_timestamp: "20250205043447"
     name: PyTorch
     supported_architectures: []
-    cuda_version: "12.2"
-    description: A Pytorch 2.1 Base with CUDA 12.2
+    cuda_version: 12.6.3
+    description: A Pytorch 2.6 Base with CUDA 12.6.3
     entrypoint_script: ""
     labels:
-    - cuda12.2
-    - pytorch2.1
+    - cuda12.6.3
+    - pytorch2.6
     apps:
-    - name: chat
-      type: custom
-      class: webapp
-      start_command: cd /project/code/ && PROXY_PREFIX=$PROXY_PREFIX python3 -m chatui
-      health_check_command: curl -f "http://localhost:8080/"
-      stop_command: pkill -f "^python3 -m chatui"
-      user_msg: ""
-      logfile_path: ""
-      timeout_seconds: 60
-      icon_url: ""
-      webapp_options:
-        autolaunch: true
-        port: "8080"
-        proxy:
-          trim_prefix: true
-        url: http://localhost:8080/
     - name: jupyterlab
       type: jupyterlab
       class: webapp
       start_command: jupyter lab --allow-root --port 8888 --ip 0.0.0.0 --no-browser
         --NotebookApp.base_url=\$PROXY_PREFIX --NotebookApp.default_url=/lab --NotebookApp.allow_origin='*'
+        --notebook-dir=\$NVWB_PROJECT_MOUNT_TARGET
       health_check_command: '[ \$(echo url=\$(jupyter lab list | head -n 2 | tail
         -n 1 | cut -f1 -d'' '' | grep -v ''Currently'' | sed "s@/?@/lab?@g") | curl
         -o /dev/null -s -w ''%{http_code}'' --config -) == ''200'' ]'
@@ -90,11 +75,11 @@ environment:
         url: http://localhost:6006
     programming_languages:
     - python3
-    icon_url: ""
-    image_version: 1.0.2
+    icon_url: https://workbench.download.nvidia.com/static/img/ai-workbench-icon-rectangle.jpg
+    image_version: 1.0.6
     os: linux
     os_distro: ubuntu
-    os_distro_release: "22.04"
+    os_distro_release: "24.04"
     schema_version: v2
     user_info:
       uid: ""
@@ -111,7 +96,7 @@ environment:
     - name: pip
       binary_path: /usr/local/bin/pip
       installed_packages:
-      - jupyterlab==4.0.7
+      - jupyterlab==4.2.5
     package_manager_environment:
       name: ""
       target: ""

@@ -122,7 +122,7 @@ execution:
           icon_url: ""
     resources:
         gpu:
-            requested: 0
+            requested: 1
         sharedMemoryMB: 1024
     secrets:
         - variable: NVIDIA_API_KEY
